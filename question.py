@@ -73,7 +73,7 @@ async def answer_question(question, original_answers, q_number, q_count):
 
     key_nouns = {noun.lower() for noun in key_nouns}
     print(f"Question nouns: {key_nouns}")
-    answer3 = await __search_method3(list(set(question_keywords)), key_nouns, original_answers, reverse),k,n
+    answer3,k,n = await __search_method3(list(set(question_keywords)), key_nouns, original_answers, reverse)
     title = f"Question {q_number} out of {q_count} ============ Method2=============="
     answer = f"{k}\n{n}\n best answer: {answer3}"
     ans2 = Webhook("https://discordapp.com/api/webhooks/454166751525994496/c1oeJxqmO_ysy0ricw78rPcTlDrpauISrxYKWe0-xyds7lUU1Z49JYFPa8QMEQPwSDru", color=111111)
