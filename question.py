@@ -2,7 +2,7 @@ import itertools
 import re
 import time
 from collections import defaultdict
-
+from webhook import Webhook
 from colorama import Fore, Style
 
 import search
@@ -11,7 +11,7 @@ punctuation_to_none = str.maketrans({key: None for key in "!\"#$%&\'()*+,-.:;<=>
 punctuation_to_space = str.maketrans({key: " " for key in "!\"#$%&\'()*+,-.:;<=>?@[\\]^_`{|}~�"})
 
 
-async def answer_question(question, original_answers):
+async def answer_question(question, original_answers, q_number, q_count):
     print("Searching")
     start = time.time()
 
@@ -43,13 +43,18 @@ async def answer_question(question, original_answers):
 
     search_text = [x.translate(punctuation_to_none) for x in await search.get_clean_texts(search_results)]
 
-    best_answer = await __search_method1(search_text, answers, reverse)
+    best_answer,c = await __search_method1(search_text, answers, reverse)
     if best_answer == "":
         best_answer = await __search_method2(search_text, answers, reverse)
 
     if best_answer != "":
         print(f"{Fore.GREEN}{best_answer}{Style.RESET_ALL}\n")
-
+        title = f"Question {q_number} out of {q_count} ============ Method1=============="
+        answer = f"{c}\n best answer: {best_answer}"
+        ans = Webhook("https://discordapp.com/api/webhooks/454166751525994496/c1oeJxqmO_ysy0ricw78rPcTlDrpauISrxYKWe0-xyds7lUU1Z49JYFPa8QMEQPwSDru", color=111111)
+        ans.set_title(title = title)
+        ans.set_desc(answer)
+        ans.post()
     # Get key nouns for Method 3
     key_nouns = set(quoted)
 
@@ -68,7 +73,13 @@ async def answer_question(question, original_answers):
 
     key_nouns = {noun.lower() for noun in key_nouns}
     print(f"Question nouns: {key_nouns}")
-    answer3 = await __search_method3(list(set(question_keywords)), key_nouns, original_answers, reverse)
+    answer3 = await __search_method3(list(set(question_keywords)), key_nouns, original_answers, reverse),k,n
+    title = f"Question {q_number} out of {q_count} ============ Method2=============="
+    answer = f"{k}\n{n}\n best answer: {answer3}"
+    ans = Webhook("https://discordapp.com/api/webhooks/454166751525994496/c1oeJxqmO_ysy0ricw78rPcTlDrpauISrxYKWe0-xyds7lUU1Z49JYFPa8QMEQPwSDru", color=111111)
+    ans.set_title(title = title)
+    ans.set_desc(answer)
+    ans.post()
     print(f"{Fore.GREEN}{answer3}{Style.RESET_ALL}")
 
     print(f"Search took {time.time() - start} seconds")
@@ -94,8 +105,8 @@ async def __search_method1(texts, answers, reverse):
     # If not all answers have count of 0 and the best value doesn't occur more than once, return the best answer
     best_value = min(counts.values()) if reverse else max(counts.values())
     if not all(c == 0 for c in counts.values()) and list(counts.values()).count(best_value) == 1:
-        return min(counts, key=counts.get) if reverse else max(counts, key=counts.get)
-    return ""
+        return min(counts, key=counts.get) if reverse else max(counts, key=counts.get), counts
+    return "",0
 
 
 async def __search_method2(texts, answers, reverse):
@@ -118,8 +129,8 @@ async def __search_method2(texts, answers, reverse):
     counts_sum = {answer: sum(keyword_counts.values()) for answer, keyword_counts in counts.items()}
 
     if not all(c == 0 for c in counts_sum.values()):
-        return min(counts_sum, key=counts_sum.get) if reverse else max(counts_sum, key=counts_sum.get)
-    return ""
+        return min(counts_sum, key=counts_sum.get) if reverse else max(counts_sum, key=counts_sum.get),counts
+    return "",0
 
 
 async def __search_method3(question_keywords, question_key_nouns, answers, reverse):
@@ -182,5 +193,5 @@ async def __search_method3(question_keywords, question_key_nouns, answers, rever
     if set(noun_scores.values()) != {0}:
         return min(noun_scores, key=noun_scores.get) if reverse else max(noun_scores, key=noun_scores.get)
     if set(keyword_scores.values()) != {0}:
-        return min(keyword_scores, key=keyword_scores.get) if reverse else max(keyword_scores, key=keyword_scores.get)
-    return ""
+        return min(keyword_scores, key=keyword_scores.get) if reverse else max(keyword_scores, key=keyword_scores.get),keyword_scores, noun_scores
+    return "",0,0

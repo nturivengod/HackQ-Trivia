@@ -69,6 +69,6 @@ async def websocket_handler(uri, headers):
                     print(f"Question {message_data['questionNumber']} out of {message_data['questionCount']}")
                     print(f"{Fore.CYAN}{question_str}\n{answers}{Style.RESET_ALL}")
                     print()
-                    await question.answer_question(question_str, answers)
+                    await question.answer_question(question_str, answers, message_data['questionNumber'],{message_data['questionCount']})
 
     print("Socket closed")
