@@ -76,10 +76,10 @@ async def answer_question(question, original_answers, q_number, q_count):
     answer3 = await __search_method3(list(set(question_keywords)), key_nouns, original_answers, reverse),k,n
     title = f"Question {q_number} out of {q_count} ============ Method2=============="
     answer = f"{k}\n{n}\n best answer: {answer3}"
-    ans = Webhook("https://discordapp.com/api/webhooks/454166751525994496/c1oeJxqmO_ysy0ricw78rPcTlDrpauISrxYKWe0-xyds7lUU1Z49JYFPa8QMEQPwSDru", color=111111)
-    ans.set_title(title = title)
-    ans.set_desc(answer)
-    ans.post()
+    ans2 = Webhook("https://discordapp.com/api/webhooks/454166751525994496/c1oeJxqmO_ysy0ricw78rPcTlDrpauISrxYKWe0-xyds7lUU1Z49JYFPa8QMEQPwSDru", color=111111)
+    ans2.set_title(title = title)
+    ans2.set_desc(answer)
+    ans2.post()
     print(f"{Fore.GREEN}{answer3}{Style.RESET_ALL}")
 
     print(f"Search took {time.time() - start} seconds")
