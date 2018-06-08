@@ -45,7 +45,7 @@ async def answer_question(question, original_answers, q_number, q_count):
 
     best_answer,c = await __search_method1(search_text, answers, reverse)
     if best_answer == "":
-        best_answer = await __search_method2(search_text, answers, reverse)
+        best_answer,c = await __search_method2(search_text, answers, reverse)
 
     if best_answer != "":
         print(f"{Fore.GREEN}{best_answer}{Style.RESET_ALL}\n")
