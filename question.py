@@ -191,7 +191,7 @@ async def __search_method3(question_keywords, question_key_nouns, answers, rever
     print(f"Keyword scores: {keyword_scores}")
     print(f"Noun scores: {noun_scores}")
     if set(noun_scores.values()) != {0}:
-        return min(noun_scores, key=noun_scores.get) if reverse else max(noun_scores, key=noun_scores.get)
+        return min(noun_scores, key=noun_scores.get) if reverse else max(noun_scores, key=noun_scores.get),keyword_scores, noun_scores
     if set(keyword_scores.values()) != {0}:
         return min(keyword_scores, key=keyword_scores.get) if reverse else max(keyword_scores, key=keyword_scores.get),keyword_scores, noun_scores
-    return "",0,0
+    return "",keyword_scores, noun_scores
