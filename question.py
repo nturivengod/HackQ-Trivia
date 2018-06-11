@@ -50,7 +50,7 @@ async def answer_question(question, original_answers, q_number, q_count):
     if best_answer != "":
         print(f"{Fore.GREEN}{best_answer}{Style.RESET_ALL}\n")
         title = f"Question {q_number} out of {q_count} ============ Method1=============="
-        answer = f"{c}\n best answer: {best_answer}"
+        answer = f"{c}\n **best answer: {best_answer}**"
         ans = Webhook("https://discordapp.com/api/webhooks/454166751525994496/c1oeJxqmO_ysy0ricw78rPcTlDrpauISrxYKWe0-xyds7lUU1Z49JYFPa8QMEQPwSDru", color=111111)
         ans.set_title(title = title)
         ans.set_desc(answer)
@@ -75,7 +75,7 @@ async def answer_question(question, original_answers, q_number, q_count):
     print(f"Question nouns: {key_nouns}")
     answer3,k,n = await __search_method3(list(set(question_keywords)), key_nouns, original_answers, reverse)
     title = f"Question {q_number} out of {q_count} ============ Method2=============="
-    answer = f"{k}\n{n}\n best answer: {answer3}"
+    answer = f"{k}\n{n}\n **best answer: {answer3}**"
     ans2 = Webhook("https://discordapp.com/api/webhooks/454166751525994496/c1oeJxqmO_ysy0ricw78rPcTlDrpauISrxYKWe0-xyds7lUU1Z49JYFPa8QMEQPwSDru", color=111111)
     ans2.set_title(title = title)
     ans2.set_desc(answer)
